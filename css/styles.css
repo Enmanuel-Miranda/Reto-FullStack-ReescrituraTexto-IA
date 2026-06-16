@@ -225,3 +225,44 @@ button:disabled {
 .form-group textarea {
     height: 180px;
 }
+
+.meter-container {
+    max-width: 1000px;
+    margin: 0 auto 20px auto;
+    background: var(--bg-card);
+    padding: 15px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.meter-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11pt;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.status-safe {
+    color: #059669;
+    font-weight: bold;
+    background: #ecfdf5;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.meter-bar {
+    width: 100%;
+    background-color: #e2e8f0;
+    height: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3182ce, #319795);
+    transition: width 1.5s ease-in-out; /* Animación suave de llenado */
+}

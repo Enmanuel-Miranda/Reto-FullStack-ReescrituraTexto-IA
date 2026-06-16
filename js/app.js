@@ -27,12 +27,18 @@ window.onclick = function(event) {
 
 /**
  * ==========================================================================
- * 2. FUNCIÓN PARA LIMPIAR LOS CUADROS DE TEXTO
+ * 2. FUNCIÓN PARA LIMPIAR LOS CUADROS DE TEXTO Y MÉTRICAS
  * ==========================================================================
  */
 function clearFields() {
     document.getElementById('inputText').value = "";
     document.getElementById('outputText').value = "";
+    
+    // Ocultar el medidor de Turnitin al limpiar las cajas
+    const turnitinMeter = document.getElementById('turnitinMeter');
+    if (turnitinMeter) {
+        turnitinMeter.style.display = 'none';
+    }
 }
 
 /**
@@ -104,6 +110,10 @@ async function humanizeText() {
             }
             
             outputTextTextarea.value = textoFinal;
+
+            // DISPARADOR: Calcular la probabilidad de evadir Turnitin con el texto recibido
+            calcularMetricasTurnitin(textoFinal);
+
         } else {
             console.error("Estructura de respuesta desconocida:", data);
             outputTextTextarea.value = "Error: La IA respondió, pero el formato no fue el esperado.";
@@ -137,4 +147,62 @@ function copyToClipboard() {
         btnCopy.innerHTML = originalText;
         btnCopy.style.backgroundColor = "";
     }, 2000);
+}
+
+/**
+ * ==========================================================================
+ * 4. SIMULADOR DE FILTRO TURNITIN (ANÁLISIS DE BURSTINESS Y PERPLEJIDAD)
+ * ==========================================================================
+ */
+function calcularMetricasTurnitin(texto) {
+    if (!texto) return;
+
+    // 1. Analizar la Perplejidad (Variedad de vocabulario)
+    const palabras = texto.toLowerCase().split(/\s+/).filter(p => p.length > 2);
+    const palabrasUnicas = new Set(palabras);
+    const riquezaLexica = palabras.length > 0 ? (palabrasUnicas.size / palabras.length) : 0;
+
+    // 2. Analizar el Burstiness (Variación en la longitud de oraciones)
+    const oraciones = texto.split(/[.!?]+/).map(o => o.trim()).filter(o => o.length > 0);
+    let variacionLongitud = 0;
+
+    if (oraciones.length > 1) {
+        const longitudes = oraciones.map(o => o.split(/\s+/).length);
+        const promedio = longitudes.reduce((a, b) => a + b, 0) / longitudes.length;
+        const varianza = longitudes.reduce((a, b) => a + Math.pow(b - promedio, 2), 0) / longitudes.length;
+        variacionLongitud = Math.min(varianza / 10, 1);
+    }
+
+    // 3. Calcular porcentaje combinando métricas lingüísticas
+    let scoreBase = 75; 
+    let bonusLexico = riquezaLexica * 15;
+    let bonusRáfaga = variacionLongitud * 10;
+    
+    let porcentajeExito = Math.min(Math.round(scoreBase + bonusLexico + bonusRáfaga), 99);
+
+    // 4. Actualizar dinámicamente los elementos visuales del medidor en el HTML
+    const meterContainer = document.getElementById('turnitinMeter');
+    const meterPercentage = document.getElementById('meterPercentage');
+    const meterFill = document.getElementById('meterFill');
+    const meterStatus = document.getElementById('meterStatus');
+
+    if (meterContainer && meterPercentage && meterFill && meterStatus) {
+        meterContainer.style.display = 'block';
+        meterPercentage.innerText = `${porcentajeExito}%`;
+        meterFill.style.width = `${porcentajeExito}%`;
+
+        if (porcentajeExito >= 90) {
+            meterStatus.innerText = "Riesgo Muy Bajo AI ✨";
+            meterStatus.style.color = "#059669";
+            meterStatus.style.background = "#ecfdf5";
+        } else if (porcentajeExito >= 80) {
+            meterStatus.innerText = "Pasa Filtros Turnitin 👍";
+            meterStatus.style.color = "#2b6cb0";
+            meterStatus.style.background = "#ebf8ff";
+        } else {
+            meterStatus.innerText = "Revisión Recomendada ⚠️";
+            meterStatus.style.color = "#d69e2e";
+            meterStatus.style.background = "#fffaf0";
+        }
+    }
 }

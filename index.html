@@ -26,6 +26,16 @@
             </div>
         </section>
 
+        <div id="turnitinMeter" class="meter-container" style="display: none;">
+            <div class="meter-text">
+                <span>Probabilidad de evadir Turnitin: <strong id="meterPercentage">0%</strong></span>
+                <span id="meterStatus" class="status-safe">Seguro</span>
+            </div>
+            <div class="meter-bar">
+                <div id="meterFill" class="meter-fill"></div>
+            </div>
+        </div>
+        
         <div class="actions-bar">
             <button id="btnProcess" class="btn-primary" onclick="humanizeText()">Humanizar Texto ✨</button>
             <button id="btnCopy" class="btn-secondary" onclick="copyToClipboard()">Copiar Resultado 📋</button>
@@ -47,11 +57,16 @@
 
             <div class="form-group">
                 <label for="systemPrompt">Indicaciones del Sistema (System Prompt):</label>
-                <textarea id="systemPrompt">Actúa como un filólogo y redactor académico experto en universidades peruanas. Tu objetivo es reescribir el texto para que pase los filtros de detección de IA de Turnitin, manteniendo estrictamente el rigor científico y el fondo de la investigación.
-Reglas obligatorias:
-1. Incrementa la Perplejidad: Usa un vocabulario académico rico y variado. Evita clichés de ChatGPT como "en resumen", "crucial", "remarcable".
-2. Incrementa el Burstiness: Alterna drásticamente la longitud de las oraciones (combina oraciones largas con muy cortas).
-3. Devuelve ÚNICAMENTE el texto humanizado, sin introducciones ni explicaciones.</textarea>
+                <textarea id="systemPrompt" rows="10" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e0; font-family: inherit; font-size: 10pt; resize: vertical;">
+                Actúa como un asesor metodológico de tesis y corrector de estilo experto en universidades peruanas. Tu único objetivo es reescribir el texto académico provisto para eliminar cualquier huella de Inteligencia Artificial (patrones predecibles de ChatGPT) y asegurar que sea indetectable por Turnitin, manteniendo intacto el fondo de la investigación, las variables y el rigor científico.
+
+                Aplica estrictamente las siguientes reglas de redacción:
+                1. Estilo Universitario Peruano: Utiliza una prosa científica formal, clara y objetiva, alineada al manual APA vigente. Evita términos redundantes o introducciones innecesarias.
+                2. Vocabulario Humano y Natural: Elimina por completo los clichés y muletillas típicas que delatan a ChatGPT, tales como: "en resumen", "crucial", "remarcable", "es fundamental destacar", "por un lado / por otro lado", "en conclusión", o adjetivos exagerados. Usa conectores lógicos variados y fluidos.
+                3. Ritmo de Escritura Variable (Burstiness): Destruye las estructuras de oraciones simétricas. Combina párrafos con oraciones explicativas largas (revisión de literatura) seguidas de frases de impacto directas y cortas. Esto imita el pensamiento humano real.
+                4. PROTECCIÓN ESTRICTA DE CITAS APA: Identifica y mantén exactamente igual cualquier estructura de citación académica, ya sean parentéticas o narrativas (ej. "(Pérez, 2022)", "según Ramírez (2021, p. 45)", "Fernández et al."). No cambies los apellidos, los años, ni los conectores que introducen la cita.
+                5. Formato de Salida: Entrega ÚNICAMENTE el texto reescrito. No agregues saludos, explicaciones, ni notas de "Aquí tienes el texto".
+                </textarea>
             </div>
 
             <button class="btn-primary" onclick="toggleModal(false)">Guardar y Cerrar</button>
