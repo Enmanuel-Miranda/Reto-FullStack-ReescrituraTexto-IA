@@ -117,3 +117,24 @@ async function humanizeText() {
         btnProcessButton.innerText = "Humanizar Texto ✨";
     }
 }
+
+function copyToClipboard() {
+    const outputText = document.getElementById('outputText');
+    if (!outputText.value || outputText.value.startsWith("Conectando con") || outputText.value.startsWith("Error")) {
+        alert("No hay ningún texto válido para copiar todavía.");
+        return;
+    }
+
+    navigator.clipboard.writeText(outputText.value);
+
+    // Cambiar el texto del botón temporalmente para dar feedback visual
+    const btnCopy = document.getElementById('btnCopy');
+    const originalText = btnCopy.innerHTML;
+    btnCopy.innerHTML = "¡Copiado! ✅";
+    btnCopy.style.backgroundColor = "#cbd5e0";
+
+    setTimeout(() => {
+        btnCopy.innerHTML = originalText;
+        btnCopy.style.backgroundColor = "";
+    }, 2000);
+}
