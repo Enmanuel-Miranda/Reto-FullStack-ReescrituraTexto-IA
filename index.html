@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humanizador de Texto Académico</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <main class="main-container">
+        <header class="header">
+            <h1>Humanizador de Texto Académico</h1>
+            <p>Ajuste de perplejidad y burstiness para textos universitarios</p>
+        </header>
+
+        <section class="workspace">
+            <div class="card">
+                <label for="inputText">Texto original (Detectado como IA):</label>
+                <textarea id="inputText" placeholder="Pega aquí el párrafo de la tesis generado por ChatGPT..."></textarea>
+            </div>
+
+            <div class="card">
+                <label for="outputText">Resultado (Baja detectabilidad):</label>
+                <textarea id="outputText" readonly placeholder="El texto reescrito por la IA aparecerá aquí..."></textarea>
+            </div>
+        </section>
+
+        <div class="actions-bar">
+            <button id="btnProcess" class="btn-primary" onclick="humanizeText()">Humanizar Texto ✨</button>
+            <button id="btnClear" class="btn-secondary" onclick="clearFields()">Limpiar Campos 🗑️</button>
+            <button id="btnOpenSettings" class="btn-secondary" onclick="toggleModal(true)">⚙️ Configurar IA / Prompt</button>
+        </div>
+    </main>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="toggleModal(false)">&times;</span>
+            <h2>Configuración del Motor de IA</h2>
+            <p class="modal-instruction">Modifica las credenciales y las instrucciones que recibe la IA para alterar el texto.</p>
+            
+            <div class="form-group">
+                <label for="apiKey">Google Gemini API Key:</label>
+                <input type="password" id="apiKey" placeholder="Pega tu API Key aquí...">
+            </div>
+
+            <div class="form-group">
+                <label for="systemPrompt">Indicaciones del Sistema (System Prompt):</label>
+                <textarea id="systemPrompt">Actúa como un filólogo y redactor académico experto en universidades peruanas. Tu objetivo es reescribir el texto para que pase los filtros de detección de IA de Turnitin, manteniendo estrictamente el rigor científico y el fondo de la investigación.
+Reglas obligatorias:
+1. Incrementa la Perplejidad: Usa un vocabulario académico rico y variado. Evita clichés de ChatGPT como "en resumen", "crucial", "remarcable".
+2. Incrementa el Burstiness: Alterna drásticamente la longitud de las oraciones (combina oraciones largas con muy cortas).
+3. Devuelve ÚNICAMENTE el texto humanizado, sin introducciones ni explicaciones.</textarea>
+            </div>
+
+            <button class="btn-primary" onclick="toggleModal(false)">Guardar y Cerrar</button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
